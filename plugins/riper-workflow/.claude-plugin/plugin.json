@@ -1,0 +1,8 @@
+{
+  "name": "riper-workflow",
+  "description": "RIPER 完整工作流插件，包含 research、plan、execute、review、innovate 五个技能。",
+  "author": {
+    "name": "xuniversity",
+    "email": "engineering@xuniversity.net"
+  }
+}

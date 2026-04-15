@@ -1,0 +1,33 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "kepler-skills-marketplace",
+  "description": "Kepler 团队技能市场，统一分发 Claude Code 与 Codex 可复用技能。",
+  "owner": {
+    "name": "Kepler Team",
+    "email": "engineering@xuniversity.net"
+  },
+  "plugins": [
+    {
+      "name": "kepler-rules",
+      "description": "Kepler 项目编码规范技能。",
+      "author": {
+        "name": "Kepler Team",
+        "email": "engineering@xuniversity.net"
+      },
+      "source": "./plugins/kepler-rules",
+      "category": "development",
+      "homepage": "https://github.com/xuniversity/skills-markerplace"
+    },
+    {
+      "name": "riper-workflow",
+      "description": "RIPER 完整工作流插件，包含 research、plan、execute、review、innovate 五个技能。",
+      "author": {
+        "name": "Kepler Team",
+        "email": "engineering@xuniversity.net"
+      },
+      "source": "./plugins/riper-workflow",
+      "category": "productivity",
+      "homepage": "https://github.com/xuniversity/skills-markerplace"
+    }
+  ]
+}

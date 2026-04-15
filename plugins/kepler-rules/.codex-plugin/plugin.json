@@ -1,0 +1,40 @@
+{
+  "name": "kepler-rules",
+  "version": "0.1.0",
+  "description": "Kepler 项目编码规范技能。",
+  "author": {
+    "name": "xuniversity",
+    "email": "engineering@xuniversity.net",
+    "url": "https://github.com/xuniversity"
+  },
+  "homepage": "https://github.com/xuniversity/skills-markerplace",
+  "repository": "https://github.com/xuniversity/skills-markerplace",
+  "license": "UNLICENSED",
+  "keywords": [
+    "kepler",
+    "coding-rules",
+    "java",
+    "spring"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "kepler-rules",
+    "shortDescription": "Kepler 编码规范",
+    "longDescription": "应用 Kepler 团队编码规范，包括分层约束、工具类复用和实现一致性要求。",
+    "developerName": "Kepler Team",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/xuniversity/skills-markerplace",
+    "privacyPolicyURL": "https://github.com/xuniversity/skills-markerplace",
+    "termsOfServiceURL": "https://github.com/xuniversity/skills-markerplace",
+    "defaultPrompt": [
+      "遵守 kepler-rules 修复当前 Java 接口问题。",
+      "按 Kepler 规范完成 Service 与 Controller 分层。",
+      "基于 kepler-rules 审查这次代码改动是否合规。"
+    ],
+    "brandColor": "#2F6FEB"
+  }
+}

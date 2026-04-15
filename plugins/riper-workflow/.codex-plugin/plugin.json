@@ -1,0 +1,43 @@
+{
+  "name": "riper-workflow",
+  "version": "0.1.0",
+  "description": "RIPER 完整工作流插件，包含 research、plan、execute、review、innovate 五个技能。",
+  "author": {
+    "name": "xuniversity",
+    "email": "engineering@xuniversity.net",
+    "url": "https://github.com/xuniversity"
+  },
+  "homepage": "https://github.com/xuniversity/skills-markerplace",
+  "repository": "https://github.com/xuniversity/skills-markerplace",
+  "license": "UNLICENSED",
+  "keywords": [
+    "riper",
+    "workflow",
+    "research",
+    "plan",
+    "execute",
+    "review",
+    "innovate"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "riper-workflow",
+    "shortDescription": "RIPER 五阶段完整工作流",
+    "longDescription": "提供 RIPER 的 research、plan、execute、review、innovate 五个技能，安装一次即可获得完整工作流能力。",
+    "developerName": "xuniversity",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/xuniversity/skills-markerplace",
+    "privacyPolicyURL": "https://github.com/xuniversity/skills-markerplace",
+    "termsOfServiceURL": "https://github.com/xuniversity/skills-markerplace",
+    "defaultPrompt": [
+      "进入 RESEARCH 模式，先收集上下文和问题边界。",
+      "进入 PLAN 模式，输出完整可执行计划。",
+      "进入 EXECUTE 与 REVIEW 模式完成实施和验收。"
+    ],
+    "brandColor": "#2F6FEB"
+  }
+}
