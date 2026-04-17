@@ -1,0 +1,41 @@
+{
+  "name": "agent-team-vben-rules",
+  "version": "0.1.0",
+  "description": "团队协作与 Vben 前端规范插件，包含 agent-team 与 vben-component-rules 两个技能。",
+  "author": {
+    "name": "xuniversity",
+    "email": "engineering@xuniversity.net",
+    "url": "https://github.com/xuniversity"
+  },
+  "homepage": "https://github.com/xuniversity/plugins-marketplace",
+  "repository": "https://github.com/xuniversity/plugins-marketplace",
+  "license": "UNLICENSED",
+  "keywords": [
+    "agent-team",
+    "vben",
+    "workflow",
+    "frontend-rules",
+    "team-collaboration"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "agent-team-vben-rules",
+    "shortDescription": "Agent Team + Vben 规则",
+    "longDescription": "提供 Agent Team 协作编排能力，以及 Vben 组件选择与实现规范。安装一次即可获得这两个团队常用技能。",
+    "developerName": "xuniversity",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/xuniversity/plugins-marketplace",
+    "privacyPolicyURL": "https://github.com/xuniversity/plugins-marketplace",
+    "termsOfServiceURL": "https://github.com/xuniversity/plugins-marketplace",
+    "defaultPrompt": [
+      "用 $agent-team 处理这个任务，并允许你启用 subAgent。",
+      "用 $vben-component-rules 实现这个 Vben 页面，并严格遵守共享组件规则。",
+      "先用 $agent-team 规划协作方式，再用 $vben-component-rules 落地前端实现。"
+    ],
+    "brandColor": "#2F6FEB"
+  }
+}

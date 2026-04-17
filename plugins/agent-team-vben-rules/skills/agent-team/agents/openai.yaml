@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Team"
+  short_description: "Orchestrate reusable cross-project subagent roles"
+  default_prompt: "Use $agent-team to handle this task with an Orchestrator and the right subagent roles."

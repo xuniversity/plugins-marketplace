@@ -16,7 +16,7 @@
       },
       "source": "./plugins/kepler-rules",
       "category": "development",
-      "homepage": "https://github.com/xuniversity/skills-markerplace"
+      "homepage": "https://github.com/xuniversity/plugins-marketplace"
     },
     {
       "name": "riper-workflow",
@@ -27,7 +27,18 @@
       },
       "source": "./plugins/riper-workflow",
       "category": "productivity",
-      "homepage": "https://github.com/xuniversity/skills-markerplace"
+      "homepage": "https://github.com/xuniversity/plugins-marketplace"
+    },
+    {
+      "name": "agent-team-vben-rules",
+      "description": "团队协作与 Vben 前端规范插件，包含 agent-team 与 vben-component-rules 两个技能。",
+      "author": {
+        "name": "Kepler Team",
+        "email": "engineering@xuniversity.net"
+      },
+      "source": "./plugins/agent-team-vben-rules",
+      "category": "development",
+      "homepage": "https://github.com/xuniversity/plugins-marketplace"
     }
   ]
 }

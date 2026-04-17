@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vben Component Rules"
+  short_description: "Enforce Vben UI component and styling rules."
+  default_prompt: "Use $vben-component-rules to implement a Vben page without violating the required component conventions."

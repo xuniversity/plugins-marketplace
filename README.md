@@ -8,11 +8,13 @@
 
 - `kepler-rules`：独立的项目编码规范插件
 - `riper-workflow`：整套 RIPER 工作流插件（包含 5 个 skills）
+- `agent-team-vben-rules`：团队协作与 Vben 前端规范插件（包含 2 个 skills）
 
 当前插件：
 
 - `kepler-rules`
 - `riper-workflow`
+- `agent-team-vben-rules`
 
 关键目录结构：
 
@@ -22,7 +24,8 @@
 ├── .agents/plugins/marketplace.json         # Codex 市场清单
 └── plugins/
     ├── kepler-rules/
-    └── riper-workflow/
+    ├── riper-workflow/
+    └── agent-team-vben-rules/
 ```
 
 `riper-workflow` 内包含以下 skills：
@@ -32,6 +35,11 @@
 - `riper-execute`
 - `riper-review`
 - `riper-innovate`
+
+`agent-team-vben-rules` 内包含以下 skills：
+
+- `agent-team`
+- `vben-component-rules`
 
 ---
 
@@ -48,19 +56,20 @@ claude plugin marketplace add <owner>/<repo>
 示例：
 
 ```bash
-claude plugin marketplace add xuniversity/skills-markerplace
+claude plugin marketplace add xuniversity/plugins-marketplace
 ```
 
 ### 方式二：使用本地路径
 
 ```bash
-claude plugin marketplace add /绝对路径/skills-markerplace
+claude plugin marketplace add /绝对路径/plugins-marketplace
 ```
 
 添加成功后，在 Claude Code 插件界面中找到本市场并安装：
 
 - 需要 Kepler 编码规范时：`kepler-rules`
 - 需要完整 RIPER 工作流时：`riper-workflow`（一次安装含 5 个 skills）
+- 需要 Agent Team 协作和 Vben 规则时：`agent-team-vben-rules`（一次安装含 2 个 skills）
 
 ---
 
@@ -73,7 +82,7 @@ Codex 目前采用仓库内本地市场文件模式（`$REPO_ROOT/.agents/plugin
 1. 克隆仓库到本地：
 
 ```bash
-git clone https://github.com/xuniversity/skills-markerplace.git
+git clone https://github.com/xuniversity/plugins-marketplace.git
 ```
 
 2. 在 Codex 中打开该仓库目录（作为当前工作目录）。
@@ -81,6 +90,7 @@ git clone https://github.com/xuniversity/skills-markerplace.git
 4. 重启 Codex（修改 marketplace 或 plugin 后也建议重启）。
 5. 在 Codex 中打开 `/plugins`，选择 `Kepler Skills Marketplace`，安装所需插件。
 6. 推荐安装 `riper-workflow` 以获得完整 RIPER 工作流能力。
+7. 如果希望一次安装 `agent-team` 与 `vben-component-rules`，安装 `agent-team-vben-rules`。
 
 ---
 
