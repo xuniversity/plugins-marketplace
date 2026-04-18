@@ -5,10 +5,12 @@
 - `agent-team`
 - `vben-component-rules`
 
-## Skill 路径
+## Skill 源路径
 
-- `skills/agent-team/SKILL.md`
-- `skills/vben-component-rules/SKILL.md`
+- [`skills/agent-team/SKILL.md`](../../skills/agent-team/SKILL.md)
+- [`skills/vben-component-rules/SKILL.md`](../../skills/vben-component-rules/SKILL.md)
+
+插件目录中的 `skills` 入口会指向仓库根目录 `skills/`，这样既能保持 marketplace 快速安装，也只需要维护一份技能源文件。
 
 ## 适用说明
 

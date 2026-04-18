@@ -22,6 +22,7 @@
 .
 ├── .claude-plugin/marketplace.json          # Claude Code 市场清单
 ├── .agents/plugins/marketplace.json         # Codex 市场清单
+├── skills/                                  # 仓库根目录技能源文件
 └── plugins/
     ├── kepler-rules/
     ├── riper-workflow/
@@ -40,6 +41,13 @@
 
 - `agent-team`
 - `vben-component-rules`
+
+其中 `agent-team-vben-rules` 的技能源文件直接维护在仓库根目录 `skills/` 下：
+
+- `skills/agent-team/`
+- `skills/vben-component-rules/`
+
+插件目录仅作为 marketplace 安装入口，便于一次安装多个 skill。
 
 ---
 
@@ -91,6 +99,8 @@ git clone https://github.com/xuniversity/plugins-marketplace.git
 5. 在 Codex 中打开 `/plugins`，选择 `Kepler Skills Marketplace`，安装所需插件。
 6. 推荐安装 `riper-workflow` 以获得完整 RIPER 工作流能力。
 7. 如果希望一次安装 `agent-team` 与 `vben-component-rules`，安装 `agent-team-vben-rules`。
+
+如果只是浏览或维护技能源文件，请直接查看仓库根目录 `skills/`。
 
 ---
 
