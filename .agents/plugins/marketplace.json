@@ -32,7 +32,7 @@
       "name": "agent-team-vben-rules",
       "source": {
         "source": "local",
-        "path": "./plugins/agent-team-vben-rules"
+        "path": "./"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -36,7 +36,7 @@
         "name": "Kepler Team",
         "email": "engineering@xuniversity.net"
       },
-      "source": "./plugins/agent-team-vben-rules",
+      "source": "./",
       "category": "development",
       "homepage": "https://github.com/xuniversity/plugins-marketplace"
     }

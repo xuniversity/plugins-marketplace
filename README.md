@@ -8,7 +8,7 @@
 
 - `kepler-rules`：独立的项目编码规范插件
 - `riper-workflow`：整套 RIPER 工作流插件（包含 5 个 skills）
-- `agent-team-vben-rules`：团队协作与 Vben 前端规范插件（包含 2 个 skills）
+- `agent-team-vben-rules`：团队协作与 Vben 前端规范插件（根目录插件，包含 2 个 skills）
 
 当前插件：
 
@@ -22,11 +22,12 @@
 .
 ├── .claude-plugin/marketplace.json          # Claude Code 市场清单
 ├── .agents/plugins/marketplace.json         # Codex 市场清单
+├── .claude-plugin/plugin.json               # 根目录插件 manifest（Claude）
+├── .codex-plugin/plugin.json                # 根目录插件 manifest（Codex）
 ├── skills/                                  # 仓库根目录技能源文件
 └── plugins/
     ├── kepler-rules/
-    ├── riper-workflow/
-    └── agent-team-vben-rules/
+    └── riper-workflow/
 ```
 
 `riper-workflow` 内包含以下 skills：
@@ -37,17 +38,15 @@
 - `riper-review`
 - `riper-innovate`
 
-`agent-team-vben-rules` 内包含以下 skills：
+根目录插件 `agent-team-vben-rules` 内包含以下 skills：
 
 - `agent-team`
 - `vben-component-rules`
 
-其中 `agent-team-vben-rules` 的技能源文件直接维护在仓库根目录 `skills/` 下：
+其技能源文件直接维护在仓库根目录 `skills/` 下：
 
 - `skills/agent-team/`
 - `skills/vben-component-rules/`
-
-插件目录仅作为 marketplace 安装入口，便于一次安装多个 skill。
 
 ---
 
@@ -77,7 +76,7 @@ claude plugin marketplace add /绝对路径/plugins-marketplace
 
 - 需要 Kepler 编码规范时：`kepler-rules`
 - 需要完整 RIPER 工作流时：`riper-workflow`（一次安装含 5 个 skills）
-- 需要 Agent Team 协作和 Vben 规则时：`agent-team-vben-rules`（一次安装含 2 个 skills）
+- 需要 Agent Team 协作和 Vben 规则时：安装根目录插件 `agent-team-vben-rules`（一次安装含 2 个 skills）
 
 ---
 
@@ -98,7 +97,7 @@ git clone https://github.com/xuniversity/plugins-marketplace.git
 4. 重启 Codex（修改 marketplace 或 plugin 后也建议重启）。
 5. 在 Codex 中打开 `/plugins`，选择 `Kepler Skills Marketplace`，安装所需插件。
 6. 推荐安装 `riper-workflow` 以获得完整 RIPER 工作流能力。
-7. 如果希望一次安装 `agent-team` 与 `vben-component-rules`，安装 `agent-team-vben-rules`。
+7. 如果希望一次安装 `agent-team` 与 `vben-component-rules`，安装根目录插件 `agent-team-vben-rules`。
 
 如果只是浏览或维护技能源文件，请直接查看仓库根目录 `skills/`。
 
@@ -112,6 +111,8 @@ git clone https://github.com/xuniversity/plugins-marketplace.git
 git pull
 ```
 
-- 新增或调整 skill 时，请同时更新对应插件目录和两份 marketplace：
+- 新增或调整 root `skills/` 下的 skill 时，请同时更新根目录 plugin manifest 和两份 marketplace：
+  - `.claude-plugin/plugin.json`
+  - `.codex-plugin/plugin.json`
   - `.claude-plugin/marketplace.json`
   - `.agents/plugins/marketplace.json`
