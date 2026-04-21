@@ -39,6 +39,17 @@
       "source": "./",
       "category": "development",
       "homepage": "https://github.com/xuniversity/plugins-marketplace"
+    },
+    {
+      "name": "yunxiao-bug-export",
+      "description": "导出 Yunxiao 缺陷列表、详情、截图和按日期归档的 Markdown/JSON 制品。",
+      "author": {
+        "name": "Kepler Team",
+        "email": "engineering@xuniversity.net"
+      },
+      "source": "./plugins/yunxiao-bug-export",
+      "category": "productivity",
+      "homepage": "https://github.com/xuniversity/plugins-marketplace"
     }
   ]
 }

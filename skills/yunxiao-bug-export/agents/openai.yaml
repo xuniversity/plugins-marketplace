@@ -1,0 +1,4 @@
+interface:
+  display_name: "Yunxiao Bug Export"
+  short_description: "Export Yunxiao bugs into dated local artifacts"
+  default_prompt: "Use $yunxiao-bug-export to export Yunxiao project bugs, unresolved bug details, and inline screenshots into dated JSON, Markdown, and image artifacts."

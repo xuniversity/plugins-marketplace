@@ -1,0 +1,12 @@
+{
+  "defaultProjectAlias": "job3",
+  "projects": {
+    "job3": {
+      "organizationId": "f3fdeb6e-03b5-406d-b1dd-c79104fc0f5e",
+      "projectId": "a27b5e78f058a07cf351e424c2",
+      "projectName": "就业项目",
+      "customCode": "NJUJOB",
+      "excludedStatuses": ["已修复", "已关闭", "暂不解决"]
+    }
+  }
+}

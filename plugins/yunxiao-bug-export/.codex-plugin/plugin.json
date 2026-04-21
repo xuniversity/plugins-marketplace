@@ -1,0 +1,41 @@
+{
+  "name": "yunxiao-bug-export",
+  "version": "0.1.0",
+  "description": "导出 Yunxiao 缺陷列表、详情、截图和按日期归档的 Markdown/JSON 制品。",
+  "author": {
+    "name": "xuniversity",
+    "email": "engineering@xuniversity.net",
+    "url": "https://github.com/xuniversity"
+  },
+  "homepage": "https://github.com/xuniversity/plugins-marketplace",
+  "repository": "https://github.com/xuniversity/plugins-marketplace",
+  "license": "UNLICENSED",
+  "keywords": [
+    "yunxiao",
+    "bug-export",
+    "defect",
+    "mcp",
+    "artifact"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "yunxiao-bug-export",
+    "shortDescription": "导出 Yunxiao Bug 为本地制品",
+    "longDescription": "安装后可使用 yunxiao-bug-export 技能，把 Yunxiao 项目缺陷导出为按日期分组的 JSON、Markdown 和截图制品。依赖 alibabacloud-devops-mcp-server 与 Yunxiao 访问配置。",
+    "developerName": "xuniversity",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/xuniversity/plugins-marketplace",
+    "privacyPolicyURL": "https://github.com/xuniversity/plugins-marketplace",
+    "termsOfServiceURL": "https://github.com/xuniversity/plugins-marketplace",
+    "defaultPrompt": [
+      "Use $yunxiao-bug-export to export unresolved bugs from a Yunxiao project into dated local artifacts.",
+      "Use $yunxiao-bug-export to fetch current Yunxiao bug details and group them by status.",
+      "Use $yunxiao-bug-export to export Yunxiao bugs with screenshots and reusable Markdown files."
+    ],
+    "brandColor": "#D97706"
+  }
+}

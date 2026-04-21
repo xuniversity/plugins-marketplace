@@ -15,6 +15,7 @@
 - `kepler-rules`
 - `riper-workflow`
 - `agent-team-vben-rules`
+- `yunxiao-bug-export`
 
 关键目录结构：
 
@@ -27,7 +28,8 @@
 ├── skills/                                  # 仓库根目录技能源文件
 └── plugins/
     ├── kepler-rules/
-    └── riper-workflow/
+    ├── riper-workflow/
+    └── yunxiao-bug-export/
 ```
 
 `riper-workflow` 内包含以下 skills：
@@ -47,6 +49,7 @@
 
 - `skills/agent-team/`
 - `skills/vben-component-rules/`
+- `skills/yunxiao-bug-export/`
 
 ---
 
@@ -77,6 +80,7 @@ claude plugin marketplace add /绝对路径/plugins-marketplace
 - 需要 Kepler 编码规范时：`kepler-rules`
 - 需要完整 RIPER 工作流时：`riper-workflow`（一次安装含 5 个 skills）
 - 需要 Agent Team 协作和 Vben 规则时：安装根目录插件 `agent-team-vben-rules`（一次安装含 2 个 skills）
+- 需要导出 Yunxiao 缺陷并生成本地制品时：安装 `yunxiao-bug-export`
 
 ---
 
@@ -98,6 +102,7 @@ git clone https://github.com/xuniversity/plugins-marketplace.git
 5. 在 Codex 中打开 `/plugins`，选择 `Kepler Skills Marketplace`，安装所需插件。
 6. 推荐安装 `riper-workflow` 以获得完整 RIPER 工作流能力。
 7. 如果希望一次安装 `agent-team` 与 `vben-component-rules`，安装根目录插件 `agent-team-vben-rules`。
+8. 如果需要导出 Yunxiao 缺陷列表、详情截图和 Markdown/JSON 制品，安装 `yunxiao-bug-export`。
 
 如果只是浏览或维护技能源文件，请直接查看仓库根目录 `skills/`。
 
