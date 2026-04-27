@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xuniversity.github.io/frontend-project-starter/design-tokens.schema.json",
+  "title": "Frontend design token YAML",
+  "type": "object",
+  "required": ["meta", "tokens"],
+  "properties": {
+    "meta": {
+      "type": "object"
+    },
+    "brand": {
+      "type": "object"
+    },
+    "implementation": {
+      "type": "object"
+    },
+    "tokens": {
+      "type": "object"
+    },
+    "tokenOverrides": {
+      "type": "object"
+    },
+    "assets": {
+      "type": "object"
+    },
+    "pageIntent": {
+      "type": "object"
+    },
+    "doNotDo": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

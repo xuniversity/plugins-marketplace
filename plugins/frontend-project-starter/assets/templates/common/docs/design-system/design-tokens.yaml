@@ -1,0 +1,181 @@
+# yaml-language-server: $schema=./design-tokens.schema.json
+meta:
+  project: frontend-project
+  version: '0.1.0'
+  owner: design-system
+  purpose: Shared design token contract for AI generation and frontend implementation.
+  currentRuntimeAudit: docs/design-system/runtime-token-map.md
+  notes:
+    - Runtime truth comes from the target project's CSS variables and theme runtime.
+    - Tokens marked documentation-first are design constraints, not proof of runtime wiring.
+    - Brand or tenant tokens should be scoped and must not leak into global admin surfaces.
+brand:
+  product: Frontend Application
+  northStar: Clear enterprise UI with token-backed visual consistency.
+implementation:
+  runtimeMappings:
+    pageBackground: --background
+    sectionSurface: --background-deep
+    cardSurface: --card
+    popoverSurface: --popover
+    textPrimary: --foreground
+    textSecondary: --muted-foreground
+    brandPrimary: --primary
+    brandPrimaryForeground: --primary-foreground
+    borderSubtle: --border
+    inputBorder: --input
+    overlay: --overlay
+    radiusBase: --radius
+    radiusSm: --radius-sm
+    radiusMd: --radius-md
+    radiusLg: --radius-lg
+    radiusXl: --radius-xl
+    success: --success
+    warning: --warning
+    destructive: --destructive
+    info: --info
+    infoForeground: --info-foreground
+  integrationGuidance:
+    - Use hsl(var(--primary)) or semantic Tailwind utilities for global brand actions.
+    - Use scoped brand or portal tokens only inside surfaces that import the relevant token bridge.
+    - Treat --info as an information surface unless the runtime explicitly defines it as a readable accent; use --info-foreground or another readable semantic token for text.
+    - If a token is documentation-first, do not assume it updates automatically when preferences change.
+    - When code and this YAML disagree, check runtime-token-map.md and update docs and runtime deliberately.
+tokens:
+  color:
+    brand:
+      primary:
+        value: '#2F6FEB'
+        runtimeVariable: --primary
+        scope: global
+        usage: Primary actions, selected states, key emphasis.
+      primarySoft:
+        value: hsl(var(--primary) / 10%)
+        status: runtime-derived
+        usage: Soft selected backgrounds and low-emphasis chips.
+    surface:
+      pageBg:
+        runtimeVariable: --background
+        usage: Global page background.
+      sectionBg:
+        runtimeVariable: --background-deep
+        usage: Deep page background or grouped system surface.
+      cardBg:
+        runtimeVariable: --card
+        usage: Cards, drawers, modals, table containers.
+      popoverBg:
+        runtimeVariable: --popover
+        usage: Dropdowns, popovers, elevated overlays.
+    text:
+      primary:
+        runtimeVariable: --foreground
+        usage: Main text and headings.
+      secondary:
+        runtimeVariable: --muted-foreground
+        usage: Secondary text, metadata, helper text.
+      inverse:
+        runtimeVariable: --primary-foreground
+        usage: Text on primary brand surfaces.
+    border:
+      default:
+        runtimeVariable: --border
+        usage: Default border color.
+      input:
+        runtimeVariable: --input
+        usage: Input border color.
+    status:
+      success:
+        runtimeVariable: --success
+        usage: Completed, approved, positive states.
+      warning:
+        runtimeVariable: --warning
+        usage: Pending, waiting, needs attention.
+      destructive:
+        runtimeVariable: --destructive
+        usage: Rejected, failed, destructive states.
+      info:
+        runtimeVariable: --info
+        usage: Explanatory or time-based neutral information surfaces; do not use directly as a CustomTag accent unless contrast is verified.
+      infoForeground:
+        runtimeVariable: --info-foreground
+        usage: Text or icon color paired with information surfaces when the runtime provides it.
+  typography:
+    fontFamily:
+      systemSans:
+        value: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, 'Noto Sans', sans-serif
+        runtimeVariable: --font-family
+        status: runtime
+    scale:
+      pageTitle:
+        value: 1.5rem-1.875rem
+        status: documentation-first
+      sectionTitle:
+        value: 0.9375rem-1rem
+        status: documentation-first
+      body:
+        value: 0.875rem-1rem
+        status: documentation-first
+      meta:
+        value: 0.75rem-0.8125rem
+        status: documentation-first
+  spacing:
+    xxs:
+      value: 4px
+      status: documentation-first
+    xs:
+      value: 8px
+      status: documentation-first
+    sm:
+      value: 12px
+      status: documentation-first
+    md:
+      value: 16px
+      status: documentation-first
+    lg:
+      value: 20px
+      status: documentation-first
+    xl:
+      value: 24px
+      status: documentation-first
+  radius:
+    base:
+      value: 0.5rem
+      runtimeVariable: --radius
+      status: runtime
+    sm:
+      value: max(0px, calc(var(--radius) - 2px))
+      runtimeVariable: --radius-sm
+      status: runtime-derived
+    md:
+      value: var(--radius)
+      runtimeVariable: --radius-md
+      status: runtime-derived
+    lg:
+      value: calc(var(--radius) + 2px)
+      runtimeVariable: --radius-lg
+      status: runtime-derived
+    xl:
+      value: calc(var(--radius) + 4px)
+      runtimeVariable: --radius-xl
+      status: runtime-derived
+    pill:
+      value: 999px
+      status: documentation-first
+      usage: Only badges, avatar/circle shapes, or search-pill patterns when already established.
+  shadow:
+    card:
+      value: 0 1px 2px hsl(var(--foreground) / 6%)
+      status: documentation-first
+    hover:
+      value: 0 4px 12px hsl(var(--foreground) / 8%)
+      status: documentation-first
+  motion:
+    durationFast:
+      value: 0.18s
+      status: documentation-first
+    durationBase:
+      value: 0.22s-0.25s
+      status: documentation-first
+    easingStandard:
+      value: ease
+      status: documentation-first

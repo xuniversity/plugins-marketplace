@@ -16,6 +16,7 @@
 - `riper-workflow`
 - `agent-team-vben-rules`
 - `yunxiao-bug-export`
+- `frontend-project-starter`
 
 关键目录结构：
 
@@ -29,6 +30,7 @@
 └── plugins/
     ├── kepler-rules/
     ├── riper-workflow/
+    ├── frontend-project-starter/
     └── yunxiao-bug-export/
 ```
 
@@ -40,16 +42,25 @@
 - `riper-review`
 - `riper-innovate`
 
-根目录插件 `agent-team-vben-rules` 内包含以下 skills：
+仓库根目录 `skills/` 维护可复用的独立 skill 源文件，目前包括：
 
 - `agent-team`
+- `frontend-design-system`
+- `frontend-workflow-standards`
+- `iconify-governance`
 - `vben-component-rules`
+- `yunxiao-bug-export`
 
 其技能源文件直接维护在仓库根目录 `skills/` 下：
 
 - `skills/agent-team/`
+- `skills/frontend-design-system/`
+- `skills/frontend-workflow-standards/`
+- `skills/iconify-governance/`
 - `skills/vben-component-rules/`
 - `skills/yunxiao-bug-export/`
+
+`frontend-design-system`、`frontend-workflow-standards`、`iconify-governance` 和 `vben-component-rules` 是从项目实践中抽象出的公共前端规范 skill，已去除具体项目名称和业务描述。`frontend-project-starter` 会把这些规范初始化到目标项目的 `.agents/` 通用层，并生成 `AGENTS.md`、`CLAUDE.md` 和 `.codex/skills` 兼容入口。
 
 ---
 
@@ -81,6 +92,7 @@ claude plugin marketplace add /绝对路径/plugins-marketplace
 - 需要完整 RIPER 工作流时：`riper-workflow`（一次安装含 5 个 skills）
 - 需要 Agent Team 协作和 Vben 规则时：安装根目录插件 `agent-team-vben-rules`（一次安装含 2 个 skills）
 - 需要导出 Yunxiao 缺陷并生成本地制品时：安装 `yunxiao-bug-export`
+- 需要初始化前端设计系统、共享组件和 Iconify 规范时：安装 `frontend-project-starter`
 
 ---
 
@@ -103,6 +115,7 @@ git clone https://github.com/xuniversity/plugins-marketplace.git
 6. 推荐安装 `riper-workflow` 以获得完整 RIPER 工作流能力。
 7. 如果希望一次安装 `agent-team` 与 `vben-component-rules`，安装根目录插件 `agent-team-vben-rules`。
 8. 如果需要导出 Yunxiao 缺陷列表、详情截图和 Markdown/JSON 制品，安装 `yunxiao-bug-export`。
+9. 如果需要初始化一个带设计系统、前端规范和可选组件实现的项目，安装 `frontend-project-starter`。
 
 如果只是浏览或维护技能源文件，请直接查看仓库根目录 `skills/`。
 

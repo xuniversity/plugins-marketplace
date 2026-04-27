@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Workflow Standards"
+  short_description: "Keep workflow forms, statuses, and sorting consistent."
+  default_prompt: "Use $frontend-workflow-standards to implement this workflow-facing frontend change with consistent status, validation, and sorting behavior."

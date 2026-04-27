@@ -10,16 +10,17 @@
 - Use Quill for rich text editing.
 - Use Vite and `pnpm` workspace conventions already present in the repo.
 
-## Template-First Workflow
+## Project-First Workflow
 
 Review these local sources before implementing a new feature:
 
-- `.specify/templates/project-vben/components/README.md`
-- `.specify/templates/project-vben/pages/tag-management/`
-- `.specify/templates/project-vben/api/`
-- `.specify/templates/project-vben/docs/`
+- project shared components, commonly `src/components/` or `apps/web-antd/src/components/`
+- nearby pages under `src/views/`, `src/pages/`, `apps/*/src/views/`, or the project's route modules
+- `docs/design-system/` when the project has design-system docs
+- `docs/standards/` when workflow or form behavior is standardized
+- local Swagger/OpenAPI artifacts or the live Swagger endpoint
 
-If the template library already covers the requested pattern, reuse that pattern instead of inventing a new structure.
+If an existing project component already covers the requested pattern, reuse it instead of inventing a new structure. Retired template scaffolds should not be used as runtime dependencies.
 
 ## Detail Modal and Drawer Rules
 
@@ -59,8 +60,8 @@ If the template library already covers the requested pattern, reuse that pattern
   padding-bottom: 12px;
   font-size: 15px;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.88);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  color: hsl(var(--foreground));
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .detail-section-title::before {
@@ -68,7 +69,7 @@ If the template library already covers the requested pattern, reuse that pattern
   width: 3px;
   height: 16px;
   background: hsl(var(--primary));
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .detail-grid {
@@ -89,14 +90,14 @@ If the template library already covers the requested pattern, reuse that pattern
 
 .detail-field-label {
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.45);
+  color: hsl(var(--muted-foreground));
   line-height: 1.5;
 }
 
 .detail-field-value {
   font-size: 14px;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.88);
+  color: hsl(var(--foreground));
   line-height: 1.5;
   min-height: 22px;
 }
@@ -105,15 +106,29 @@ If the template library already covers the requested pattern, reuse that pattern
 ## Styling Rules
 
 - Use `hsl(var(--primary))` for theme highlights instead of hard-coded theme colors.
-- Prefer soft Morandi-style colors; avoid loud bright reds or oranges unless the state semantics require them.
+- Use `hsl(var(--foreground))`, `hsl(var(--muted-foreground))`, `hsl(var(--border))`, `hsl(var(--card))`, and `hsl(var(--popover))` for text, borders, and surfaces.
+- Use `hsl(var(--success))`, `hsl(var(--warning))`, `hsl(var(--destructive))`, and `hsl(var(--info))` for status, risk, and semantic feedback colors.
+- Do not introduce literal `hex`, `rgb`, `rgba`, `white`, or `black` values in new system or workflow page styles. Exceptions are content media, chart palettes, official brand assets, or third-party embedded UI; document the reason inline if an exception is necessary.
+- Component props that accept color strings, such as `CustomTag.color`, must receive token expressions like `hsl(var(--primary))` or `hsl(var(--success))`, not raw palette values.
+- Use `var(--radius-sm)`, `var(--radius-md)`, `var(--radius-lg)`, `var(--radius-xl)`, or Tailwind semantic radius utilities instead of fixed `px` radii. Pill or circle shapes may use `rounded-full` only when the shape itself requires it.
+- Use the shared page/list shell before adding local card wrappers. For top-level enterprise pages, prefer compact `p-2` or a local token-backed padding variable over broad `p-5` containers.
+- Prefer soft Morandi-style colors through semantic tokens; avoid loud bright reds or oranges unless the state semantics require them.
 - Keep Material Design 3 style details flat rather than heavy or overly layered.
 
 ## Table and Button Rules
 
 - Render table action buttons as text-only actions.
+- `TableLayout` owns the list card shell, header divider, quick-filter chips/cards, table content, and pagination surface. Do not duplicate those card styles locally unless the page is not a table/list page.
 - Use `<Button size="small" type="link">`.
 - Add `danger` on delete actions.
 - Do not place icons inside table action buttons.
+- For `TableLayout` quick filters, prefer these semantic defaults:
+  - `全部`, `草稿`, `已结束`, `已禁用` -> `default`
+  - `待审核`, `待处理`, `待支付` -> `warning`
+  - `审核中`, `进行中`, `处理中` -> `primary`
+  - `已通过`, `启用中`, `已完成` -> `success`
+  - `已驳回`, `失败`, `已取消` -> `destructive`
+  - use `info` only for explanatory or time-based intermediate states such as `未开始`, not for `全部` or the main selected emphasis
 
 ## Icon Rules
 
@@ -125,7 +140,7 @@ If the template library already covers the requested pattern, reuse that pattern
 
 - Give all component props explicit TypeScript types.
 - Give all API requests and responses explicit TypeScript types.
-- Read `docs/swagger-admin.json.json` before defining interfaces.
+- Read local Swagger/OpenAPI artifacts or the live Swagger endpoint before defining interfaces.
 - Use `./scripts/sync-swagger.sh` when Swagger artifacts need refreshing.
 
 ## Output and Commit Rules
