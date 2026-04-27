@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Design System"
+  short_description: "Enforce token-backed frontend design rules."
+  default_prompt: "Use $frontend-design-system to keep this frontend change aligned with design tokens, runtime theme boundaries, and visual consistency rules."

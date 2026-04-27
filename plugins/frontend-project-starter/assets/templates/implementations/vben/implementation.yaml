@@ -1,0 +1,24 @@
+name: vben
+displayName: Vben + Ant Design Vue
+description: Shared component implementation for Vue 3, TypeScript, Vben, Ant Design Vue, Tailwind CSS, Iconify, and Quill.
+default: true
+copy:
+  src: src
+dependencies:
+  runtime:
+    - vue
+    - ant-design-vue
+    - '@vueuse/core'
+    - '@vben-core/icons'
+    - '@vben/hooks'
+    - quill
+  versions:
+    quill: ^2.0.3
+  expectedAliases:
+    - '#/components'
+    - '#/icons'
+    - '#/api'
+    - '#/utils'
+notes:
+  - The API adapters under src/api are intentionally minimal placeholders. Wire them to the target project's request client and backend endpoints after initialization.
+  - Fixed UI icons are exported from src/icons/index.ts. Dynamic route or config icons should remain raw Iconify IDs.

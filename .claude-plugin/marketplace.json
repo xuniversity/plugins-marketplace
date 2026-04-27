@@ -50,6 +50,17 @@
       "source": "./plugins/yunxiao-bug-export",
       "category": "productivity",
       "homepage": "https://github.com/xuniversity/plugins-marketplace"
+    },
+    {
+      "name": "frontend-project-starter",
+      "description": "前端项目初始化插件，包含设计系统、工作流、Iconify 与可选组件实现模板。",
+      "author": {
+        "name": "Kepler Team",
+        "email": "engineering@xuniversity.net"
+      },
+      "source": "./plugins/frontend-project-starter",
+      "category": "development",
+      "homepage": "https://github.com/xuniversity/plugins-marketplace"
     }
   ]
 }

@@ -1,0 +1,41 @@
+{
+  "name": "frontend-project-starter",
+  "version": "0.1.0",
+  "description": "Frontend project initialization plugin with design-system, workflow, Iconify, and selectable component implementation templates.",
+  "author": {
+    "name": "xuniversity",
+    "email": "engineering@xuniversity.net",
+    "url": "https://github.com/xuniversity"
+  },
+  "homepage": "https://github.com/xuniversity/plugins-marketplace",
+  "repository": "https://github.com/xuniversity/plugins-marketplace",
+  "license": "UNLICENSED",
+  "keywords": [
+    "frontend",
+    "design-system",
+    "vben",
+    "iconify",
+    "starter"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "frontend-project-starter",
+    "shortDescription": "初始化前端设计规范与组件模板",
+    "longDescription": "提供前端设计系统、工作流规范、Iconify 治理和 Vben 组件规则，并附带可选择的组件实现模板。当前默认实现为 Vben + Ant Design Vue，后续可扩展其他组件实现。",
+    "developerName": "xuniversity",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/xuniversity/plugins-marketplace",
+    "privacyPolicyURL": "https://github.com/xuniversity/plugins-marketplace",
+    "termsOfServiceURL": "https://github.com/xuniversity/plugins-marketplace",
+    "defaultPrompt": [
+      "Use $frontend-project-starter to initialize this frontend project with .agents rules, Codex/Claude compatibility entries, and the vben component implementation.",
+      "Use $frontend-design-system and $vben-component-rules to build this frontend page with shared components and token-backed styling.",
+      "Use $iconify-governance to add icons through the project icon barrel and keep the app offline-safe."
+    ],
+    "brandColor": "#2F6FEB"
+  }
+}

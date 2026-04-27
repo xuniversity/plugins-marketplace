@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Project Starter"
+  short_description: "Initialize frontend projects from starter templates."
+  default_prompt: "Use $frontend-project-starter to initialize this frontend project with design-system docs, workflow standards, Iconify governance, and the selected component implementation."

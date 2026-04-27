@@ -1,0 +1,4 @@
+interface:
+  display_name: "Iconify Governance"
+  short_description: "Standardize, search, and audit Iconify usage."
+  default_prompt: "Use $iconify-governance to add, search, review, or audit Iconify icons through a consistent project icon strategy."
