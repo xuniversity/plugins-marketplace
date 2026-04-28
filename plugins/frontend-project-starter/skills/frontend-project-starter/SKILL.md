@@ -11,7 +11,7 @@ Use this skill when the user wants to initialize a frontend project or apply thi
 
 1. Identify the target project root.
 2. Choose a component implementation. Default to `vben` unless the user names another implementation.
-3. If the user provides a base template repository or local template directory, pass it through `--base-template`.
+3. If the user provides a base template repository, local template directory, or template name under `~/Code/template`, pass it through `--base-template`.
 4. Run a dry run first when the target directory already contains source files.
 5. Run the initializer script from the plugin root:
 
@@ -24,6 +24,8 @@ From this skill directory, the script path is `../../scripts/init_frontend_proje
 
 The initializer copies project-level skills into `.agents/skills` by default, then exposes them to Codex through `.codex/skills` as a symlink when possible or a mirror copy when a real `.codex/skills` directory already exists. It intentionally does not copy this initialization skill into the target project; this skill belongs to the plugin and is only needed to apply or reapply the starter.
 
+The installed `frontend-design-system` skill includes `scripts/validate_design_tokens.py` for schema validation and `scripts/audit_design_tokens.py` for CI-friendly token drift checks. The starter does not generate `theme.css`; runtime theme variables remain owned by the selected base template or target project.
+
 ## Base Template Mode
 
 When initializing a brand-new project from a template repo:
@@ -31,11 +33,11 @@ When initializing a brand-new project from a template repo:
 ```bash
 python ../../scripts/init_frontend_project.py \
   --target <new-project-dir> \
-  --base-template <git-url-or-local-template-path> \
+  --base-template <git-url-or-local-template-path-or-local-name> \
   --implementation vben
 ```
 
-The initializer copies or clones the base template first, then overlays common docs and the chosen component implementation.
+The initializer copies or clones the base template first, then overlays common docs and the chosen component implementation. Local names such as `vben-supabase-admin` are resolved from `~/Code/template/<name>`.
 Use `--base-template-ref <branch-or-tag>` when the template repo needs a specific branch or tag. By default, the initializer removes the template `.git` directory so the target starts as a fresh project.
 
 ## Implementation Model
@@ -60,5 +62,7 @@ Use `--list-implementations` to see available implementations.
 - Confirm dependencies and aliases reported by the initializer.
 - Confirm `.agents/AGENTS.md`, root `AGENTS.md`, `CLAUDE.md`, `.agents/skills`, and `.codex/skills` exist when the target project should carry its own project rules.
 - Use `--update-package-json` when the initializer should add missing runtime dependencies. It preserves pnpm `catalog:` style when the target project uses it; otherwise it falls back to implementation-declared versions.
+- When changing design token docs, run `python .agents/skills/frontend-design-system/scripts/validate_design_tokens.py . --all`.
+- For design-sensitive changes, run `python .agents/skills/frontend-design-system/scripts/audit_design_tokens.py . --paths <changed-runtime-files>`.
 - Run the target project's formatter, typecheck, and focused frontend checks.
 - For Vben projects, use `$vben-component-rules`, `$frontend-design-system`, `$frontend-workflow-standards`, and `$iconify-governance` after initialization.

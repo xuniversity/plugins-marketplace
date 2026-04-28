@@ -7,12 +7,15 @@ meta:
   currentRuntimeAudit: docs/design-system/runtime-token-map.md
   notes:
     - Runtime truth comes from the target project's CSS variables and theme runtime.
+    - This YAML is a contract and audit input; it does not generate theme.css.
     - Tokens marked documentation-first are design constraints, not proof of runtime wiring.
     - Brand or tenant tokens should be scoped and must not leak into global admin surfaces.
 brand:
   product: Frontend Application
   northStar: Clear enterprise UI with token-backed visual consistency.
 implementation:
+  runtimeStrategy: template-owned
+  generatesThemeCss: false
   runtimeMappings:
     pageBackground: --background
     sectionSurface: --background-deep
@@ -39,6 +42,7 @@ implementation:
     - Use hsl(var(--primary)) or semantic Tailwind utilities for global brand actions.
     - Use scoped brand or portal tokens only inside surfaces that import the relevant token bridge.
     - Treat --info as an information surface unless the runtime explicitly defines it as a readable accent; use --info-foreground or another readable semantic token for text.
+    - Do not assume this YAML emits CSS; update the target runtime theme bridge when a runtime variable is missing.
     - If a token is documentation-first, do not assume it updates automatically when preferences change.
     - When code and this YAML disagree, check runtime-token-map.md and update docs and runtime deliberately.
 tokens:

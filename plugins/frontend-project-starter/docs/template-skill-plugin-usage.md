@@ -15,6 +15,8 @@ Use the pieces together like this:
 
 The plugin should not be a runtime dependency of the generated application. After initialization, the target project owns its copied docs, skills, and component code.
 
+Design tokens are enforced as documentation, schema validation, agent rules, and audit checks. `design-tokens.yaml` is not compiled into `theme.css`; the selected project template owns runtime CSS variables and theme hooks.
+
 ## New Project Workflow
 
 For a new Vben project, start from the Vben template and apply the plugin implementation:
@@ -23,6 +25,16 @@ For a new Vben project, start from the Vben template and apply the plugin implem
 python /path/to/plugins-marketplace/plugins/frontend-project-starter/scripts/init_frontend_project.py \
   --target /path/to/new-project \
   --base-template /path/to/vben-admin-simple \
+  --implementation vben \
+  --update-package-json
+```
+
+If the template lives under `~/Code/template`, `--base-template` may be the directory name:
+
+```bash
+python /path/to/plugins-marketplace/plugins/frontend-project-starter/scripts/init_frontend_project.py \
+  --target /path/to/new-project \
+  --base-template vben-supabase-admin \
   --implementation vben \
   --update-package-json
 ```
@@ -62,7 +74,19 @@ After plugin or template changes:
    ```
 
 3. Ask an agent to create a small natural-language validation page without manually pasting every rule.
-4. Inspect the page in a browser and feed any drift back into the plugin docs, skills, or shared components.
+4. Validate design token docs when they change:
+
+   ```bash
+   python .agents/skills/frontend-design-system/scripts/validate_design_tokens.py . --all
+   ```
+
+5. Run the token drift audit on changed runtime files:
+
+   ```bash
+   python .agents/skills/frontend-design-system/scripts/audit_design_tokens.py . --paths <changed-runtime-files>
+   ```
+
+6. Inspect the page in a browser and feed any drift back into the plugin docs, skills, shared components, or target runtime token bridge.
 
 ## Adding Other Implementations
 

@@ -4,27 +4,89 @@
   "title": "Frontend design token YAML",
   "type": "object",
   "required": ["meta", "tokens"],
+  "additionalProperties": false,
   "properties": {
     "meta": {
-      "type": "object"
+      "type": "object",
+      "required": ["project", "version", "owner", "purpose"],
+      "additionalProperties": false,
+      "properties": {
+        "project": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "version": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "currentRuntimeAudit": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
     },
     "brand": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "product": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "northStar": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "voice": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
     },
     "implementation": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "runtimeStrategy": {
+          "type": "string",
+          "enum": ["template-owned", "generated-css", "hybrid"]
+        },
+        "generatesThemeCss": {
+          "type": "boolean"
+        },
+        "runtimeMappings": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/cssVariable"
+          }
+        },
+        "integrationGuidance": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
     },
     "tokens": {
-      "type": "object"
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/tokenNode"
+      }
     },
     "tokenOverrides": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": true
     },
     "assets": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": true
     },
     "pageIntent": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": true
     },
     "doNotDo": {
       "type": "array",
@@ -33,5 +95,111 @@
       }
     }
   },
-  "additionalProperties": true
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "cssVariable": {
+      "type": "string",
+      "pattern": "^--[A-Za-z0-9_-]+$"
+    },
+    "tokenValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "tokenLeaf": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/tokenValue"
+        },
+        "runtimeVariable": {
+          "$ref": "#/$defs/cssVariable"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "runtime",
+            "runtime-derived",
+            "documentation-first",
+            "portal-derived",
+            "scoped",
+            "deprecated"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "global",
+            "system",
+            "workflow",
+            "portal",
+            "tenant",
+            "brand",
+            "scoped",
+            "component",
+            "local"
+          ]
+        },
+        "usage": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "fallback": {
+          "$ref": "#/$defs/tokenValue"
+        },
+        "pairedWith": {
+          "$ref": "#/$defs/cssVariable"
+        },
+        "contrastPair": {
+          "$ref": "#/$defs/cssVariable"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringList"
+        }
+      },
+      "anyOf": [
+        {
+          "required": ["value"]
+        },
+        {
+          "required": ["runtimeVariable"]
+        }
+      ]
+    },
+    "tokenGroup": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/tokenNode"
+      }
+    },
+    "tokenNode": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/tokenLeaf"
+        },
+        {
+          "$ref": "#/$defs/tokenGroup"
+        }
+      ]
+    }
+  }
 }

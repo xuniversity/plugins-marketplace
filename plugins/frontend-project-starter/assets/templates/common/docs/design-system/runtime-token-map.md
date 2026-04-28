@@ -4,6 +4,8 @@
 
 This file records which design tokens are actually wired into the target application's runtime theme. Keep it updated when token variables, theme preferences, or CSS bridges change.
 
+`design-tokens.yaml` is not a token compiler and does not generate `theme.css`. The target project template owns runtime CSS variables, theme preference hooks, and any framework-specific theme bridge. If a runtime variable is missing, add it to the target runtime chain first, then update `design-tokens.yaml` and this map.
+
 ## Runtime-Capable Anchors
 
 Use these CSS variables as the default runtime anchors when they exist:
@@ -37,3 +39,5 @@ These are useful design constraints but may not be live runtime preferences yet:
 - If a token is only a design target, mark it as `documentation-first`.
 - If a token only exists inside one scoped surface, mark it as scoped and do not use it globally.
 - Prefer fixing shared token bridges before replacing many page-level literals.
+- Run the `frontend-design-system` schema validation script when `design-tokens.yaml` changes.
+- Run the `frontend-design-system` design-token audit script for changed runtime files before finalizing System or Workflow UI changes.

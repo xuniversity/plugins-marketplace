@@ -17,6 +17,9 @@ TEMPLATES_ROOT = PLUGIN_ROOT / "assets" / "templates"
 COMMON_ROOT = TEMPLATES_ROOT / "common"
 IMPLEMENTATIONS_ROOT = TEMPLATES_ROOT / "implementations"
 PLUGIN_SKILLS_ROOT = PLUGIN_ROOT / "skills"
+LOCAL_TEMPLATE_ROOTS = (
+    Path.home() / "Code" / "template",
+)
 PROJECT_SKILLS = (
     "frontend-design-system",
     "frontend-workflow-standards",
@@ -25,6 +28,7 @@ PROJECT_SKILLS = (
 )
 TEMPLATE_COPY_IGNORE = shutil.ignore_patterns(
     ".DS_Store",
+    ".env.local",
     ".git",
     ".turbo",
     "coverage",
@@ -34,6 +38,7 @@ TEMPLATE_COPY_IGNORE = shutil.ignore_patterns(
 )
 TEMPLATE_COPY_IGNORE_KEEP_GIT = shutil.ignore_patterns(
     ".DS_Store",
+    ".env.local",
     ".turbo",
     "coverage",
     "dist",
@@ -105,6 +110,7 @@ def list_implementations() -> None:
 def detect_src_root(target: Path) -> Path:
     candidates = [
         target / "apps" / "web-antd" / "src",
+        target / "apps" / "web" / "src",
         target / "web-antd" / "src",
         target / "src",
     ]
@@ -126,6 +132,25 @@ def is_empty_dir(path: Path) -> bool:
     return not path.exists() or not any(path.iterdir())
 
 
+def resolve_base_template_source(source: str) -> str:
+    if not source or is_git_source(source):
+        return source
+
+    source_path = Path(source).expanduser()
+    if source_path.exists():
+        return str(source_path.resolve())
+
+    if source_path.is_absolute() or len(source_path.parts) > 1:
+        return source
+
+    for template_root in LOCAL_TEMPLATE_ROOTS:
+        candidate = template_root / source
+        if candidate.exists():
+            return str(candidate.resolve())
+
+    return source
+
+
 def copy_base_template(
     source: str,
     target: Path,
@@ -136,6 +161,8 @@ def copy_base_template(
 ) -> None:
     if not source:
         return
+
+    source = resolve_base_template_source(source)
 
     if not is_empty_dir(target):
         print(f"base template skipped: target is not empty: {target}")
@@ -582,7 +609,7 @@ def init_project(args: argparse.Namespace) -> None:
     print(f"done: copied={total.copied}, skipped={total.skipped}")
     if total.skipped and not args.force:
         print("Re-run with --force to overwrite existing files.")
-    print("Next: wire API adapters, confirm aliases such as #/, and run the target project's formatter/typecheck.")
+    print("Next: wire API adapters, confirm aliases such as #/, run token schema validation and runtime drift audit when relevant, and run the target project's formatter/typecheck.")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -602,7 +629,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--base-template",
         default="",
-        help="Optional git URL or local template directory to copy before applying plugin templates.",
+        help="Optional git URL, local template directory, or name under ~/Code/template to copy before applying plugin templates.",
     )
     parser.add_argument(
         "--base-template-ref",
@@ -617,7 +644,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--src-root",
         default="",
-        help="Target source root. Defaults to apps/web-antd/src when present, otherwise src.",
+        help="Target source root. Defaults to apps/web-antd/src, apps/web/src, web-antd/src, then src.",
     )
     parser.add_argument(
         "--docs-dir",
