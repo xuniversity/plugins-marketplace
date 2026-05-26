@@ -1,0 +1,4 @@
+interface:
+  display_name: "Image2Design"
+  short_description: "High-fidelity responsive design from images"
+  default_prompt: "Use $image2design to recreate this screenshot as a high-fidelity responsive design implementation, generating bitmap assets for complex visual elements and validating with screenshot diff."

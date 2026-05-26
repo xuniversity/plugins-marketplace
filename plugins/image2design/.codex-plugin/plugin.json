@@ -1,0 +1,41 @@
+{
+  "name": "image2design",
+  "version": "0.1.0",
+  "description": "把截图、设计稿或 UI 参考图复刻为高保真响应式设计实现，并通过 Image Gen 生成复杂位图资产、用截图 diff 校准。",
+  "author": {
+    "name": "xuniversity",
+    "email": "engineering@xuniversity.net",
+    "url": "https://github.com/xuniversity"
+  },
+  "homepage": "https://github.com/xuniversity/plugins-marketplace",
+  "repository": "https://github.com/xuniversity/plugins-marketplace",
+  "license": "UNLICENSED",
+  "keywords": [
+    "image2design",
+    "ui-recreation",
+    "visual-diff",
+    "imagegen",
+    "responsive-design"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Image2Design",
+    "shortDescription": "从参考图生成高保真响应式设计实现",
+    "longDescription": "安装后可使用 $image2design，把截图、设计稿、海报或 UI mockup 复刻为高保真响应式前端/设计稿。复杂徽章、贴纸、纹理和图标会优先通过 $imagegen 生成项目内位图资产，并用浏览器截图、visual_diff 指标和叠图按比例、间距、颜色、字体、阴影和资产观感迭代校准。",
+    "developerName": "xuniversity",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/xuniversity/plugins-marketplace",
+    "privacyPolicyURL": "https://github.com/xuniversity/plugins-marketplace",
+    "termsOfServiceURL": "https://github.com/xuniversity/plugins-marketplace",
+    "defaultPrompt": [
+      "Use $image2design to recreate this screenshot as a high-fidelity responsive design implementation.",
+      "Use $image2design to generate bitmap assets for complex badges or illustrations, then calibrate the page with screenshot diff.",
+      "Use $image2design to convert this UI mockup into responsive HTML/CSS and verify it at the reference and non-reference viewports."
+    ],
+    "brandColor": "#1677FF"
+  }
+}

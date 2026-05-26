@@ -17,6 +17,7 @@
 - `agent-team-vben-rules`
 - `yunxiao-bug-export`
 - `frontend-project-starter`
+- `image2design`（Codex-only）
 
 关键目录结构：
 
@@ -31,6 +32,7 @@
     ├── kepler-rules/
     ├── riper-workflow/
     ├── frontend-project-starter/
+    ├── image2design/
     └── yunxiao-bug-export/
 ```
 
@@ -116,8 +118,11 @@ git clone https://github.com/xuniversity/plugins-marketplace.git
 7. 如果希望一次安装 `agent-team` 与 `vben-component-rules`，安装根目录插件 `agent-team-vben-rules`。
 8. 如果需要导出 Yunxiao 缺陷列表、详情截图和 Markdown/JSON 制品，安装 `yunxiao-bug-export`。
 9. 如果需要初始化一个带设计系统、前端规范和可选组件实现的项目，安装 `frontend-project-starter`。
+10. 如果需要把截图或设计稿复刻为高保真响应式设计实现，并使用 Image Gen 生成复杂位图资产、用截图 diff 校准，安装 `image2design`。
 
 如果只是浏览或维护技能源文件，请直接查看仓库根目录 `skills/`。
+
+`image2design` 当前只加入 Codex marketplace；它依赖 Codex 的 `$imagegen`、浏览器截图和本地 diff 校准流程，暂不加入 Claude Code marketplace。
 
 ---
 
