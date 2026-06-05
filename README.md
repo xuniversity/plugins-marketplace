@@ -18,6 +18,7 @@
 - `yunxiao-bug-export`
 - `frontend-project-starter`
 - `image2design`（Codex-only）
+- `delegate-to-claude`（Codex-only）
 
 关键目录结构：
 
@@ -33,6 +34,7 @@
     ├── riper-workflow/
     ├── frontend-project-starter/
     ├── image2design/
+    ├── delegate-to-claude/
     └── yunxiao-bug-export/
 ```
 
@@ -119,10 +121,11 @@ git clone https://github.com/xuniversity/plugins-marketplace.git
 8. 如果需要导出 Yunxiao 缺陷列表、详情截图和 Markdown/JSON 制品，安装 `yunxiao-bug-export`。
 9. 如果需要初始化一个带设计系统、前端规范和可选组件实现的项目，安装 `frontend-project-starter`。
 10. 如果需要把截图或设计稿复刻为高保真响应式设计实现，并使用 Image Gen 生成复杂位图资产、用截图 diff 校准，安装 `image2design`。
+11. 如果需要把明确任务委托给本机 Claude Code headless 执行，并由 Codex 回收状态和最终验收，安装 `delegate-to-claude`。
 
 如果只是浏览或维护技能源文件，请直接查看仓库根目录 `skills/`。
 
-`image2design` 当前只加入 Codex marketplace；它依赖 Codex 的 `$imagegen`、浏览器截图和本地 diff 校准流程，暂不加入 Claude Code marketplace。
+`image2design` 和 `delegate-to-claude` 当前只加入 Codex marketplace；前者依赖 Codex 的 `$imagegen`、浏览器截图和本地 diff 校准流程，后者依赖 Codex 侧的委托编排与最终验收流程，暂不加入 Claude Code marketplace。
 
 ---
 

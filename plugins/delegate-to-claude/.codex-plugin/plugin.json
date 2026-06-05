@@ -1,0 +1,41 @@
+{
+  "name": "delegate-to-claude",
+  "version": "0.1.0",
+  "description": "将明确任务委托给本机 Claude Code headless 执行，并由 Codex 回收结果后复核验收。",
+  "author": {
+    "name": "xuniversity",
+    "email": "engineering@xuniversity.net",
+    "url": "https://github.com/xuniversity"
+  },
+  "homepage": "https://github.com/xuniversity/plugins-marketplace",
+  "repository": "https://github.com/xuniversity/plugins-marketplace",
+  "license": "UNLICENSED",
+  "keywords": [
+    "delegate",
+    "claude-code",
+    "headless",
+    "codex",
+    "execution"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "delegate-to-claude",
+    "shortDescription": "委托 Claude 执行并回收验收",
+    "longDescription": "在 Codex 中将明确任务委托给本机 Claude Code headless 执行，统一落盘过程文件，并由 Codex 完成最终验收。",
+    "developerName": "xuniversity",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/xuniversity/plugins-marketplace",
+    "privacyPolicyURL": "https://github.com/xuniversity/plugins-marketplace",
+    "termsOfServiceURL": "https://github.com/xuniversity/plugins-marketplace",
+    "defaultPrompt": [
+      "使用 delegate-to-claude 技能把当前明确实现任务委托给 Claude Code 执行并回收结果。",
+      "使用 delegate-to-claude 技能，按计划驱动模式把当前步骤委托给 Claude，并由 Codex 最终验收。",
+      "使用 delegate-to-claude 技能，在统一委托目录中记录状态、结果和日志。"
+    ],
+    "brandColor": "#2F6FEB"
+  }
+}
