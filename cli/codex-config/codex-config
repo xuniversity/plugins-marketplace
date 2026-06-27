@@ -1,0 +1,375 @@
+#!/bin/sh
+
+set -eu
+
+CODEX_DIR="${CODEX_DIR:-$HOME/.codex}"
+ACTIVE_CONFIG="$CODEX_DIR/config.toml"
+ACTIVE_AUTH="$CODEX_DIR/auth.json"
+DEFAULT_BACKUP_KEEP=3
+
+profile_files() {
+  find "$CODEX_DIR" -maxdepth 1 -type f -name "$1" ! -name '*.backup-*' | sort
+}
+
+backup_files() {
+  find "$CODEX_DIR" -maxdepth 1 -type f -name "$1.backup-*" | sort
+}
+
+backup_keep_count() {
+  keep="${CODEX_CONFIG_BACKUP_KEEP:-$DEFAULT_BACKUP_KEEP}"
+
+  case "$keep" in
+    ''|*[!0-9]*)
+      keep=$DEFAULT_BACKUP_KEEP
+      ;;
+  esac
+
+  if [ "$keep" -lt 1 ]; then
+    keep=1
+  fi
+
+  echo "$keep"
+}
+
+latest_backup_file() {
+  label=$1
+  latest=''
+
+  for file in $(backup_files "$label"); do
+    latest=$file
+  done
+
+  if [ -n "$latest" ]; then
+    echo "$latest"
+  fi
+}
+
+next_backup_path() {
+  label=$1
+  timestamp=$(date +%Y%m%d-%H%M%S)
+  backup="$CODEX_DIR/$label.backup-$timestamp"
+  index=1
+
+  while [ -e "$backup" ]; do
+    backup="$CODEX_DIR/$label.backup-$timestamp-$index"
+    index=$((index + 1))
+  done
+
+  echo "$backup"
+}
+
+prune_old_backups() {
+  label=$1
+  keep=$(backup_keep_count)
+
+  set -- $(backup_files "$label")
+  count=$#
+
+  if [ "$count" -le "$keep" ]; then
+    return 0
+  fi
+
+  remove_count=$((count - keep))
+  index=1
+
+  for file in "$@"; do
+    if [ "$index" -le "$remove_count" ]; then
+      rm -f "$file"
+      echo "Removed old $label backup: $file"
+    fi
+    index=$((index + 1))
+  done
+}
+
+usage() {
+  cat <<'__USAGE__'
+Usage:
+  codex-config               List available Codex configs
+  codex-config list          List available Codex configs
+  codex-config current       Show the active config suffix
+  codex-config use <suffix>  Switch config.toml and auth.json to <suffix>
+  codex-config sync [suffix...]
+                            Sync shared config sections from active config.toml
+                            into target config.toml.<suffix> profiles
+  codex-config save-auth <suffix>
+                            Save the current auth.json as auth.json.<suffix>
+  codex-config help          Show this help
+
+Environment:
+  CODEX_CONFIG_BACKUP_KEEP   Keep this many unmatched backups per file (default: 3)
+__USAGE__
+}
+
+sync_configs() {
+  python3 - "$CODEX_DIR" "$ACTIVE_CONFIG" "$@" <<'PY'
+from copy import deepcopy
+from pathlib import Path
+import sys
+
+import tomlkit
+
+code_dir = Path(sys.argv[1])
+active_config = Path(sys.argv[2])
+requested_suffixes = sys.argv[3:]
+
+shared_keys = [
+    "mcp_servers",
+    "skills",
+    "plugins",
+    "marketplaces",
+]
+
+if not active_config.exists():
+    print(f"Active config not found: {active_config}", file=sys.stderr)
+    sys.exit(1)
+
+source_text = active_config.read_text()
+source_doc = tomlkit.parse(source_text)
+
+if requested_suffixes:
+    target_files = [code_dir / f"config.toml.{suffix}" for suffix in requested_suffixes]
+else:
+    target_files = sorted(code_dir.glob("config.toml.*"))
+    target_files = [
+        path for path in target_files
+        if ".backup-" not in path.name
+    ]
+
+if not target_files:
+    print("No target config profiles found to sync.", file=sys.stderr)
+    sys.exit(1)
+
+missing = [str(path) for path in target_files if not path.exists()]
+if missing:
+    print("Config profile not found:", file=sys.stderr)
+    for path in missing:
+        print(f"  {path}", file=sys.stderr)
+    sys.exit(1)
+
+changed = 0
+for target in target_files:
+    target_text = target.read_text()
+    target_doc = tomlkit.parse(target_text)
+
+    for key in shared_keys:
+        if key in target_doc:
+            del target_doc[key]
+        if key in source_doc:
+            target_doc[key] = deepcopy(source_doc[key])
+
+    rendered = tomlkit.dumps(target_doc)
+    suffix = target.name.removeprefix("config.toml.")
+
+    if rendered == target_text:
+        print(f"Already in sync: {suffix}")
+        continue
+
+    target.write_text(rendered)
+    target.chmod(0o600)
+    changed += 1
+    print(f"Synced shared config to: {suffix}")
+
+print(f"Sync complete. Updated {changed} profile(s).")
+PY
+}
+
+has_matching_profile() {
+  active_file=$1
+  pattern=$2
+
+  if [ ! -f "$active_file" ]; then
+    return 1
+  fi
+
+  for file in $(profile_files "$pattern"); do
+    if cmp -s "$active_file" "$file"; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+backup_if_unmatched() {
+  active_file=$1
+  pattern=$2
+  label=$3
+
+  if [ ! -f "$active_file" ]; then
+    return 0
+  fi
+
+  if has_matching_profile "$active_file" "$pattern"; then
+    return 0
+  fi
+
+  latest_backup=$(latest_backup_file "$label")
+  if [ -n "$latest_backup" ] && cmp -s "$active_file" "$latest_backup"; then
+    echo "Latest unmatched $label backup already matches current file: $latest_backup"
+    return 0
+  fi
+
+  backup=$(next_backup_path "$label")
+  cp "$active_file" "$backup"
+  chmod 600 "$backup"
+  echo "Backed up unmatched $label to: $backup"
+  prune_old_backups "$label"
+}
+
+list_configs() {
+  if [ ! -d "$CODEX_DIR" ]; then
+    echo "Codex config directory not found: $CODEX_DIR" >&2
+    exit 1
+  fi
+
+  found=0
+  for file in $(profile_files 'config.toml.*'); do
+    found=1
+    suffix=${file##*.}
+    marker=" "
+    auth_note="no auth profile"
+
+    if [ -f "$ACTIVE_CONFIG" ] && cmp -s "$ACTIVE_CONFIG" "$file"; then
+      marker="*"
+    fi
+
+    if [ -f "$CODEX_DIR/auth.json.$suffix" ]; then
+      auth_note="auth profile"
+    fi
+
+    printf '%s %s [%s]\n' "$marker" "$suffix" "$auth_note"
+  done
+
+  if [ "$found" -eq 0 ]; then
+    echo "No config.toml.<suffix> profiles found under $CODEX_DIR"
+    exit 1
+  fi
+
+  echo
+  echo "* marks the profile that matches the current config.toml"
+}
+
+current_config() {
+  for file in $(profile_files 'config.toml.*'); do
+    suffix=${file##*.}
+    if [ -f "$ACTIVE_CONFIG" ] && cmp -s "$ACTIVE_CONFIG" "$file"; then
+      echo "$suffix"
+      return 0
+    fi
+  done
+
+  if [ -f "$ACTIVE_CONFIG" ]; then
+    echo "custom"
+    return 0
+  fi
+
+  echo "missing" >&2
+  exit 1
+}
+
+sync_auth_for_suffix() {
+  suffix=$1
+  profile="$CODEX_DIR/auth.json.$suffix"
+
+  if [ -f "$profile" ]; then
+    backup_if_unmatched "$ACTIVE_AUTH" 'auth.json.*' 'auth.json'
+    cp "$profile" "$ACTIVE_AUTH"
+    chmod 600 "$ACTIVE_AUTH"
+    echo "Synced auth profile: $suffix"
+    return 0
+  fi
+
+  if [ "$suffix" = "codex" ]; then
+    echo "No saved official auth profile for codex; kept existing auth.json"
+    echo "Tip: log in with the official account once, then run: codex-config save-auth codex"
+    return 0
+  fi
+
+  echo "No auth profile found for: $suffix; kept existing auth.json"
+  return 0
+}
+
+save_auth() {
+  if [ $# -ne 1 ] || [ -z "$1" ]; then
+    echo "Please provide a suffix to save the current auth profile under." >&2
+    usage >&2
+    exit 1
+  fi
+
+  suffix=$1
+  target="$CODEX_DIR/auth.json.$suffix"
+
+  if [ ! -f "$ACTIVE_AUTH" ]; then
+    echo "Current auth.json does not exist: $ACTIVE_AUTH" >&2
+    exit 1
+  fi
+
+  cp "$ACTIVE_AUTH" "$target"
+  chmod 600 "$target"
+  echo "Saved current auth profile to: $target"
+}
+
+switch_config() {
+  if [ $# -ne 1 ] || [ -z "$1" ]; then
+    echo "Please provide a config suffix." >&2
+    usage >&2
+    exit 1
+  fi
+
+  suffix=$1
+  target="$CODEX_DIR/config.toml.$suffix"
+
+  if [ ! -f "$target" ]; then
+    echo "Config not found: $target" >&2
+    echo >&2
+    list_configs >&2
+    exit 1
+  fi
+
+  if [ -f "$ACTIVE_CONFIG" ] && cmp -s "$ACTIVE_CONFIG" "$target"; then
+    echo "Codex config already set to: $suffix"
+  else
+    backup_if_unmatched "$ACTIVE_CONFIG" 'config.toml.*' 'config.toml'
+    cp "$target" "$ACTIVE_CONFIG"
+    chmod 600 "$ACTIVE_CONFIG"
+    echo "Switched active Codex config to: $suffix"
+  fi
+
+  sync_auth_for_suffix "$suffix"
+}
+
+command="${1:-list}"
+
+case "$command" in
+  list)
+    list_configs
+    ;;
+  current)
+    current_config
+    ;;
+  use)
+    shift
+    switch_config "$@"
+    ;;
+  sync)
+    shift
+    sync_configs "$@"
+    ;;
+  save-auth)
+    shift
+    save_auth "$@"
+    ;;
+  help|-h|--help)
+    usage
+    ;;
+  *)
+    if [ $# -eq 1 ]; then
+      switch_config "$command"
+    else
+      echo "Unknown command: $command" >&2
+      echo >&2
+      usage >&2
+      exit 1
+    fi
+    ;;
+esac

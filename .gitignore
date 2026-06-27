@@ -1,3 +1,17 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# Local CLI credentials and environment profiles.
+cli/**/config.toml
+cli/**/config.toml.*
+cli/**/auth.json
+cli/**/auth.json.*
+cli/**/*.kubeconfig
+cli/**/kubeconfig*.yaml
+cli/**/kubeconfig*.yml
+!cli/**/*.example
+!cli/**/*.example.json
+!cli/**/*.example.toml
+!cli/**/*.example.yaml
+!cli/**/*.example.yml

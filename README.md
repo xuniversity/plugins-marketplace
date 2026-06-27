@@ -20,6 +20,11 @@
 - `image2design`（Codex-only）
 - `delegate-to-claude`（Codex-only）
 
+当前 CLI 工具：
+
+- `kuse`
+- `codex-config`
+
 关键目录结构：
 
 ```text
@@ -28,6 +33,7 @@
 ├── .agents/plugins/marketplace.json         # Codex 市场清单
 ├── .claude-plugin/plugin.json               # 根目录插件 manifest（Claude）
 ├── .codex-plugin/plugin.json                # 根目录插件 manifest（Codex）
+├── cli/                                     # 可手动安装的小型 CLI 工具
 ├── skills/                                  # 仓库根目录技能源文件
 └── plugins/
     ├── kepler-rules/
@@ -126,6 +132,8 @@ git clone https://github.com/xuniversity/plugins-marketplace.git
 如果只是浏览或维护技能源文件，请直接查看仓库根目录 `skills/`。
 
 `image2design` 和 `delegate-to-claude` 当前只加入 Codex marketplace；前者依赖 Codex 的 `$imagegen`、浏览器截图和本地 diff 校准流程，后者依赖 Codex 侧的委托编排与最终验收流程，暂不加入 Claude Code marketplace。
+
+CLI 工具不作为 marketplace plugin 安装；请查看 `cli/README.md` 并手动安装需要的脚本。仓库只提交脚本源码和 `.example` 模板，不提交真实本机配置或凭据。
 
 ---
 

@@ -1,0 +1,10 @@
+# Copy this file to ~/.codex/config.toml.<suffix> and edit it locally.
+# Do not commit real config.toml profiles.
+
+model = "replace-with-model-name"
+
+# Example of a shared section that `codex-config sync` can copy between profiles.
+# Replace or remove this block in real local config files.
+[mcp_servers.example]
+command = "replace-with-command"
+args = []

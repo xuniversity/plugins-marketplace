@@ -1,0 +1,179 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+KUSE_DIR="${KUSE_DIR:-$HOME/.kube/envs}"
+KUBE_CONFIG_PATH="${KUBE_CONFIG_PATH:-$HOME/.kube/config}"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  kuse list
+  kuse current
+  kuse <env>
+  kuse use <env>
+  kuse add <env> <kubeconfig-file>
+  kuse remove <env>
+  kuse path [env]
+
+Examples:
+  kuse list
+  kuse dev
+  kuse prod
+  kuse add staging ~/Downloads/staging-kubeconfig.yaml
+EOF
+}
+
+normalize_env() {
+  local raw
+  raw="$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')"
+  case "$raw" in
+    cmt|cumt) printf 'cumt' ;;
+    seu|seu-prod) printf 'seu' ;;
+    xhu|xzhmu) printf 'xhu' ;;
+    local) printf 'local' ;;
+    *) printf '%s' "$raw" ;;
+  esac
+}
+
+env_path() {
+  local env
+  env="$(normalize_env "$1")"
+  printf '%s/%s.yaml' "$KUSE_DIR" "$env"
+}
+
+current_env() {
+  if [ -L "$KUBE_CONFIG_PATH" ]; then
+    basename "$(readlink "$KUBE_CONFIG_PATH")" .yaml
+    return
+  fi
+  kubectl config current-context 2>/dev/null || true
+}
+
+kube_field() {
+  local file="$1"
+  local jsonpath="$2"
+  kubectl --kubeconfig "$file" config view --minify -o "jsonpath=$jsonpath" 2>/dev/null || true
+}
+
+list_envs() {
+  mkdir -p "$KUSE_DIR"
+  local current
+  current="$(current_env)"
+  printf '%-2s %-12s %-18s %-12s %s\n' '' 'ENV' 'CONTEXT' 'NAMESPACE' 'SERVER'
+  find "$KUSE_DIR" -maxdepth 1 -type f -name '*.yaml' | sort | while IFS= read -r file; do
+    local env mark context namespace server
+    env="$(basename "$file" .yaml)"
+    mark=' '
+    [ "$env" = "$current" ] && mark='*'
+    context="$(kubectl --kubeconfig "$file" config current-context 2>/dev/null || true)"
+    namespace="$(kube_field "$file" '{.contexts[0].context.namespace}')"
+    server="$(kube_field "$file" '{.clusters[0].cluster.server}')"
+    [ -n "$namespace" ] || namespace='-'
+    printf '%-2s %-12s %-18s %-12s %s\n' "$mark" "$env" "${context:--}" "$namespace" "$server"
+  done
+}
+
+switch_env() {
+  local env file context namespace
+  env="$(normalize_env "$1")"
+  file="$(env_path "$env")"
+  if [ ! -f "$file" ]; then
+    printf 'kuse: env not found: %s\n\n' "$1" >&2
+    list_envs >&2
+    exit 1
+  fi
+  ln -sfn "$file" "$KUBE_CONFIG_PATH"
+  context="$(kubectl --kubeconfig "$file" config current-context 2>/dev/null || true)"
+  namespace="$(kube_field "$file" '{.contexts[0].context.namespace}')"
+  [ -n "$namespace" ] || namespace='-'
+  printf 'switched to %s' "$env"
+  [ -n "$context" ] && printf '  context=%s' "$context"
+  printf '  namespace=%s\n' "$namespace"
+}
+
+add_env() {
+  local env src dest
+  if [ "$#" -ne 2 ]; then
+    usage >&2
+    exit 2
+  fi
+  env="$(normalize_env "$1")"
+  src="$2"
+  dest="$(env_path "$env")"
+  if [ ! -f "$src" ]; then
+    printf 'kuse: kubeconfig file not found: %s\n' "$src" >&2
+    exit 1
+  fi
+  mkdir -p "$KUSE_DIR"
+  cp "$src" "$dest"
+  chmod 600 "$dest"
+  printf 'added %s -> %s\n' "$env" "$dest"
+}
+
+remove_env() {
+  local env file current
+  if [ "$#" -ne 1 ]; then
+    usage >&2
+    exit 2
+  fi
+  env="$(normalize_env "$1")"
+  file="$(env_path "$env")"
+  if [ ! -f "$file" ]; then
+    printf 'kuse: env not found: %s\n' "$1" >&2
+    exit 1
+  fi
+  current="$(current_env)"
+  if [ "$env" = "$current" ]; then
+    printf 'kuse: refusing to remove current env: %s\n' "$env" >&2
+    exit 1
+  fi
+  rm "$file"
+  printf 'removed %s\n' "$env"
+}
+
+show_path() {
+  if [ "$#" -eq 0 ]; then
+    printf '%s\n' "$KUSE_DIR"
+  else
+    env_path "$1"
+    printf '\n'
+  fi
+}
+
+cmd="${1:-list}"
+case "$cmd" in
+  list|ls)
+    list_envs
+    ;;
+  current|cur)
+    current_env
+    ;;
+  use|switch)
+    shift
+    [ "$#" -eq 1 ] || { usage >&2; exit 2; }
+    switch_env "$1"
+    ;;
+  add|import)
+    shift
+    add_env "$@"
+    ;;
+  remove|rm|delete)
+    shift
+    remove_env "$@"
+    ;;
+  path)
+    shift
+    show_path "$@"
+    ;;
+  help|-h|--help)
+    usage
+    ;;
+  *)
+    if [ "$#" -eq 1 ]; then
+      switch_env "$1"
+    else
+      usage >&2
+      exit 2
+    fi
+    ;;
+esac
