@@ -48,6 +48,11 @@ description: 当用户发出“遵守编码规范”、“遵守rules”、“�
   - `model/`
   - `util/`
 
+### 枚举类归属
+
+1. 多模块项目中的枚举类统一放在对应的 `openfeign` 模块中，作为跨模块共享的接口契约，避免在 `service` 或其他业务模块中重复定义。
+2. 单模块项目中的枚举类统一放在 `model.enums` 目录下。
+
 ### 异常处理
 
 1. 如无必要，不在业务代码中显式 `try-catch`，交由全局异常处理器统一处理。
@@ -79,6 +84,8 @@ description: 当用户发出“遵守编码规范”、“遵守rules”、“�
 
 1. 注释应少而精，仅用于关键代码与隐含约束。
 2. 避免逐行注释，优先让代码自解释。
+3. 类注释与公共方法注释必须严格使用标准 Javadoc 格式（`/** ... */`），不得以普通块注释或行注释替代。类注释必须包含 `@author` 作者标记；公共方法应根据签名和行为补充完整、准确的标准标签，例如 `@param`、`@return` 和 `@throws`。作者名优先通过 `git config user.name` 获取；命令无法获取有效用户名时，统一使用 `Codex`。
+4. 普通 Java Bean 的字段注释使用简洁的单行 Javadoc 注释，例如 `/** 注释内容 */`，不额外编写多行说明或与字段无关的 Javadoc 标签。
 
 ### Lombok 与注入
 
@@ -118,8 +125,7 @@ description: 当用户发出“遵守编码规范”、“遵守rules”、“�
    - 最后才考虑原生 SQL
 3. 避免 N+1 查询。
 4. 查询默认不要将 `namespace` 作为筛选条件：
-   - 大多数场景为单租户独立部署，库内天然是单租户数据。
-   - 云端多租户场景由底层 `ProxySQL` 动态路由到目标租户库，不应在业务查询层重复追加 `namespace` 过滤。
+   - 当前为单租户独立部署，库内天然是单租户数据，无需在业务查询层追加 `namespace` 过滤。
 
 ### SpringDoc
 
@@ -132,6 +138,17 @@ description: 当用户发出“遵守编码规范”、“遵守rules”、“�
 2. Controller 返回 `ResponseEntity<T>`，不要直接返回实体对象。
 3. `Request/Response` 对象需配套 JSR303 与 SpringDoc 注解。
 4. Controller 负责 `Request/Response` 与领域模型之间的转换，Service 层禁止直接暴露 `Request/Response` 类型。
+5. 响应返回的 DTO 对象（`Response`）包含关联对象时，优先使用嵌套 DTO 返回，以保持对象关系和业务语义清晰；仅当存在循环依赖、递归序列化或其他明确的技术问题时，才考虑将关联对象字段平铺到当前 `Response` 中。例如：
+
+   ```java
+   public class UserResponse {
+       private String id;
+       private String name;
+       private OrganizationResponse organization;
+   }
+   ```
+
+6. 响应返回的 DTO 对象（`Response`）中涉及雪花 ID 时，统一使用 `String` 类型声明，禁止使用 `Long` 或其他数值类型，以避免 JSON 序列化或反序列化过程中因数值精度限制导致 ID 丢失精度。
 
 #### 多模块且包含 openfeign 模块
 
